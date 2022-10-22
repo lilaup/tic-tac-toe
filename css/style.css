@@ -1,0 +1,197 @@
+/* Box Model Hack */
+* {
+     box-sizing: border-box;
+}
+
+/* Clear fix hack */
+.clearfix:after {
+     content: ".";
+     display: block;
+     clear: both;
+     visibility: hidden;
+     line-height: 0;
+     height: 0;
+}
+
+.clear {
+	clear: both;
+}
+
+/******************************************
+/* BASE STYLES
+/*******************************************/
+
+:root {
+     --cell-size: 100px;
+     --mark-size: calc(var(--cell-size)*.9)
+}
+
+body {
+     
+}
+
+.board{
+     width: 100vw;
+     height: 100vh;
+     display: grid;
+     justify-content: center;
+     align-content: center;
+     grid-template-columns: repeat(3, auto);
+     /* grid-gap: 5px; or put border in .cell */
+     /* the next too are to center the x and o inside the cell */
+     justify-items: center;
+     align-items: center;
+}
+
+.cell{
+     width: var(--cell-size); /* instead of width: 100px; */
+     height: var(--cell-size);
+     border: 1px solid black;
+     /* background-color: black; */
+     /* to display the contents - x and circles -- and center it*/
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     /* not sure what this does... something to do with the absolute that was set for x and circle cells */
+     position: relative;
+     cursor: pointer;
+}
+
+
+.cell.x,
+.cell.circle{
+     cursor: not-allowed;
+}
+
+
+/* removing border around square -- to be like # */
+.cell:first-child,
+.cell:nth-child(2),
+.cell:nth-child(3){
+     border-top: none;
+}
+
+/* replaces above n=cell number -- first child is 0: 3*0+1 = cell 1 and so on */
+.cell:nth-child(3n + 1){
+     border-left: none;
+}
+
+.cell:nth-child(3n+3){
+     border-right:none;
+}
+
+.cell:nth-child(7),
+.cell:nth-child(8),
+.cell:nth-child(9){
+     border-bottom: none;
+}
+
+/* creating x and circles with css instead of putting them in the html file */
+/* before is one leg or the x and after is the other */
+.cell.x::before,
+.cell.x::after,
+.board.x .cell:not(.x):not(.circle):hover::before,
+.board.x .cell:not(.x):not(.circle):hover::after{
+     /* content empty to make so that the pseudos after and before render */
+     content: '';
+     width: calc(var(--mark-size)*.15);
+     height: var(--mark-size);
+     background-color: black;
+     /* this makes sure the x crosses in the middle - absolute makes so that their base is their parent, their position is not static anymore*/
+     position: absolute;
+}
+
+.board.x .cell:not(.x):not(.circle):hover::before,
+.board.x .cell:not(.x):not(.circle):hover::after{
+     background-color: lightgray;
+}
+
+
+.cell.x::before,
+.board.x .cell:not(.x):not(.circle):hover::before{
+     rotate: 45deg;
+}
+.cell.x::after,
+.board.x .cell:not(.x):not(.circle):hover::after{
+     rotate: -45deg;
+}
+
+.cell.circle::before,
+.cell.circle::after,
+.board.circle .cell:not(.x):not(.circle):hover::before,
+.board.circle .cell:not(.x):not(.circle):hover::after{
+     content: '';
+     position: absolute;
+     border-radius: 50%;
+}
+
+/* before circle is the larger one, that will be behind the smaller one - to make the ring  of the o */
+.cell.circle::before,
+.board.circle .cell:not(.x):not(.circle):hover::before{
+     width: var(--mark-size);
+     height: var(--mark-size);
+     background-color: black;
+}
+.cell.circle::after,
+.board.circle .cell:not(.x):not(.circle):hover::after{
+     width: calc(var(--mark-size)*.7);
+     height: calc(var(--mark-size)*.7);
+     background-color: white;
+}
+
+
+.board.circle .cell:not(.x):not(.circle):hover::before{
+     background-color: lightgray;
+}
+
+.winning-message{
+     display: none;
+     position: fixed;
+     top: 0;
+     right: 0;
+     left: 0;
+     bottom: 0;
+     background-color: rgba(0, 0, 0, .9);
+     justify-content: center;
+     align-items: center;
+     font-size: 5rem;
+     color: white;
+     flex-direction: column;
+}
+
+.winning-message button{
+     font-size: 3rem;
+     background-color: white;
+     color: black
+}
+.winning-message button:hover{
+     background-color: black;
+     color: white;
+     cursor: pointer;
+}
+
+.winning-message.show{
+     display: flex;
+}
+
+
+
+
+
+
+
+
+/******************************************
+/* LAYOUT
+/*******************************************/
+header {
+
+}
+
+footer {
+
+}
+
+/******************************************
+/* ADDITIONAL STYLES
+/*******************************************/
